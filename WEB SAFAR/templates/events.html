@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-3">Available Events</h3>
+
+<div class="row">
+
+{% for e in events %}
+
+<div class="col-md-4 mb-3">
+
+  <div class="card shadow p-3">
+
+    <h5>{{e.title}}</h5>
+
+    <p><b>Date:</b> {{e.date}}</p>
+
+    <p>{{e.desc}}</p>
+
+    <a href="/register_page" class="btn btn-primary btn-sm">
+      Register
+    </a>
+
+  </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

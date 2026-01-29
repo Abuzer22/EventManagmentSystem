@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Event Registration</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+{% extends "base.html" %}
+
+{% block title %}User Register{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+  <div class="col-md-6">
+
+    <div class="card shadow p-4">
+
+      <h3 class="text-center mb-3">Register for Event</h3>
+
+      <form id="regForm">
+
+        <input id="name" class="form-control mb-3" placeholder="Name" required>
+
+        <input id="email" class="form-control mb-3" placeholder="Email" required>
+
+        <select id="event" class="form-select mb-3"></select>
+
+        <button class="btn btn-primary w-100">Register</button>
+
+      </form>
+
+      <p id="msg" class="text-success text-center mt-2"></p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+<script>
+
+// Load events
+fetch("/events")
+.then(res => res.json())
+.then(data => {
+
+  let select = document.getElementById("event");
+
+  data.forEach(e => {
+
+    let opt = document.createElement("option");
+
+    opt.value = e.title;
+    opt.text = e.title + " (" + e.date + ")";
+
+    select.appendChild(opt);
+
+  });
+
+});
+
+
+// Submit form
+document.getElementById("regForm").addEventListener("submit", function(e){
+
+  e.preventDefault();
+
+  let nameVal = document.getElementById("name").value;
+  let emailVal = document.getElementById("email").value;
+  let eventVal = document.getElementById("event").value;
+
+  fetch("/register", {
+    method:"POST",
+    headers: {
+      "Content-Type":"application/json"
+    },
+    body: JSON.stringify({
+      name: nameVal,
+      email: emailVal,
+      event: eventVal
+    })
+  })
+
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("msg").innerText = data.msg;
+  });
+
+});
+</script>
+
+{% endblock %}
+
+
+</body>
+</html>

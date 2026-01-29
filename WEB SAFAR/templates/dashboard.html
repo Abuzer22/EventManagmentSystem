@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4 text-center">Event Management System</h2>
+
+<div class="row text-center mb-4">
+
+  <div class="col-md-4">
+    <div class="card shadow p-3 bg-primary text-white">
+      <h4>Total Events</h4>
+      <h2>{{event_count}}</h2>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow p-3 bg-success text-white">
+      <h4>Total Registrations</h4>
+      <h2>{{user_count}}</h2>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow p-3 bg-warning">
+      <h4>Admin Panel</h4>
+      <br>
+      <a href="/login" class="btn btn-dark">Go to Admin</a>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="text-center">
+
+  <a href="/register_page" class="btn btn-lg btn-primary me-3">
+    Register for Event
+  </a>
+
+  <a href="/events_page" class="btn btn-lg btn-outline-dark">
+    View Events
+  </a>
+
+</div>
+
+{% endblock %}
