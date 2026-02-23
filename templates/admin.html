@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-4">Admin Dashboard</h3>
+
+
+<!-- ========== Create Event Section ========== -->
+
+<h4 class="mb-3"> Create New Event</h4>
+
+<div class="card shadow p-3 mb-4">
+
+  <input id="title" class="form-control mb-2" placeholder="Event Title">
+
+  <input id="date" type="date" class="form-control mb-2">
+
+  <textarea id="desc" class="form-control mb-2"
+    placeholder="Event Description"></textarea>
+
+  <button type="button" class="btn btn-primary w-100" id="createBtn">
+    Create Event
+  </button>
+
+</div>
+
+
+<!-- ========== Users Table ========== -->
+
+<h4 class="mb-3">Registered Users</h4>
+
+<table class="table table-bordered table-striped">
+
+<tr class="table-dark">
+  <th>Name</th>
+  <th>Email</th>
+  <th>Event</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
+
+{% for u in users %}
+<tr>
+
+  <td>{{u.name}}</td>
+  <td>{{u.email}}</td>
+  <td>{{u.event}}</td>
+  <td>{{u.status}}</td>
+
+  <td>
+    <button class="btn btn-success btn-sm"
+     onclick="updateStatus('{{u.email}}','confirmed')">Confirm</button>
+
+    <button class="btn btn-warning btn-sm"
+     onclick="updateStatus('{{u.email}}','rejected')">Reject</button>
+  </td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+
+<!-- ========== Scripts ========== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  let btn = document.getElementById("createBtn");
+
+  if(btn){
+
+    btn.addEventListener("click", function(){
+
+      let title = document.getElementById("title").value;
+      let date  = document.getElementById("date").value;
+      let desc  = document.getElementById("desc").value;
+
+      console.log("Sending:", title, date, desc);
+
+      if(!title || !date || !desc){
+        alert("Please fill all fields!");
+        return;
+      }
+
+      fetch("/create_event",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          title:title,
+          date:date,
+          desc:desc
+        })
+      })
+      .then(res=>res.json())
+      .then(data=>{
+        alert(data.msg);
+        location.reload();
+      });
+
+    });
+
+  }
+
+});
+
+
+// Update status
+function updateStatus(email,status){
+
+ fetch("/update",{
+  method:"PUT",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({email:email,status:status})
+ }).then(()=>location.reload());
+
+}
+
+</script>
+
+{% endblock %}
