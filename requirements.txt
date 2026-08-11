@@ -1,3 +1,5 @@
 flask
 pymongo
 gunicorn
+
+# run using cmd = python app.py
